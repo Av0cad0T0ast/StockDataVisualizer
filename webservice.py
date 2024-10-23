@@ -33,10 +33,28 @@ def getTimeSeriesFunction():
     return user_input
 
 # Function to get stock data
+def getStockData(symbol, time_series_function):
+    url = f"https://www.alphavantage.co/query?function={time_series_function}&symbol={symbol}&apikey={API_KEY}"
+    response = requests.get(url)
+    data = response.json()
 
+    if 'Error Message' in data:
+        print(f"Error: No data available for the stock symbol '{symbol}'")
+        return None
+    elif not data:
+        print("Error: No data returned by the API.")
+        return None
+    
+    return data
 
 # Function to validate date
-
+def validateDate(prompt):
+    while True:
+        user_input = input(prompt)
+        try:
+            return datetime.strptime(user_input, '%Y-%m-%d')
+        except:
+            print('Invalid date format. Please enter in YYYY-MM-DD format.')
 
 # Function to plot chart
 def plot_chart(chart_type, data, title):
@@ -68,34 +86,46 @@ def plot_chart(chart_type, data, title):
 # Main Loop
 
 def main():
-    chart_type = 0
-    timeSeriesFunction = 0
+    while True:
+    
+        chart_type = 0
+        timeSeriesFunction = 0
     
     
-    print("Stock Data Visualizer\n---------------------------")
+        print("Stock Data Visualizer\n---------------------------")
 
 
-    # Ask user to select chart type
+        # Ask user to select chart type
     
-    chart_type = getChartType()
+        chart_type = getChartType()
 
-    # Ask user to select time series function
+        # Ask user to select time series function
 
-    timeSeriesFunction = getTimeSeriesFunction()
-
-    # Map users choice to API function names
+        timeSeriesFunction = getTimeSeriesFunction()
 
 
-    # Fetch stock data from Alpha Vantage
+        # Ask user for date range
+
+        begin_date = validateDate("Enter the beginning date (YYY-MM-DD):")
+        end_date = validateDate("Enter the end date (YYYY-MM-DD):")
 
 
-    # Filter data based on the date range
+        # Ensure end date is not before the begin date
+        if end_date < begin_date:
+            print("End date cannot be earlier than the start date. Please try again.")
+            continue
 
 
-    # Plot chart based on user's choice
+        # Fetch stock data from Alpha Vantage
 
 
-    # Ask if user wants to continue
+        # Convert dates to strings for comparison
+
+
+        # Plot chart based on user's choice
+
+
+        # Ask if user wants to continue
 
 
 if __name__ == "__main__":
