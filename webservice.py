@@ -17,6 +17,21 @@ def getChartType():
             break
     return user_input
 
+# Function to get Time series
+def getTimeSeriesFunction():
+    user_input = 0
+    while(True):
+        print("Select the Time Series of the chart you want to generate")
+        print("--------------------------------------------------------")
+        print("1. Intraday")
+        print("2. Daily")
+        print("3. Weekly")
+        print("4. Monthly")
+        user_input = input("Enter time series function (1, 2, 3, 4): ")
+        if(int(user_input) < 0 or int(user_input) < 5):
+            break
+    return user_input
+
 # Function to get stock data
 
 
@@ -42,14 +57,19 @@ def getChartType():
 
 def main():
     chart_type = 0
+    timeSeriesFunction = 0
+    
+    
+    print("Stock Data Visualizer\n---------------------------")
+
 
     # Ask user to select chart type
     
     chart_type = getChartType()
 
-
     # Ask user to select time series function
 
+    timeSeriesFunction = getTimeSeriesFunction()
 
     # Map users choice to API function names
 
