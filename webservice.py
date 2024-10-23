@@ -4,6 +4,19 @@ from datetime import datetime
 
 API_KEY = '5JUJV1WUJIBMM95'
 
+# Function to get chart type
+
+def getChartType():
+    user_input = 0
+    while(True):
+        print("Chart Types\n---------------------")
+        print("1. Bar")
+        print("2. Line")
+        user_input = input("Enter the chart type you want (1, 2): ")
+        if(int(user_input) == 1 or int(user_input) == 2):
+            break
+    return user_input
+
 # Function to get stock data
 
 
@@ -27,8 +40,12 @@ API_KEY = '5JUJV1WUJIBMM95'
 
 # Main Loop
 
+def main():
+    chart_type = 0
 
     # Ask user to select chart type
+    
+    chart_type = getChartType()
 
 
     # Ask user to select time series function
@@ -49,5 +66,5 @@ API_KEY = '5JUJV1WUJIBMM95'
     # Ask if user wants to continue
 
 
-# if __name__ == "__main__":
-    # main()
+if __name__ == "__main__":
+    main()
