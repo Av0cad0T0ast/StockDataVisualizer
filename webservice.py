@@ -39,18 +39,30 @@ def getTimeSeriesFunction():
 
 
 # Function to plot chart
-
+def plot_chart(chart_type, data, title):
 
     # Create chart type
+    if chart_type == 1:
+        chart = pygal.Bar()
+    elif chart_type == 2:
+        chart = pygal.Line()
+    else:
+        print("Invalid chart type")
+        return
+    
+    # Extract data and set chart values
+    dates = []
+    values = []
+    for date, daily_data in sorted(data.items()):
+        dates.append(date)
+        values.append(float(daily_data['4. close']))
 
-
-    # Extract data
-
-
-    # Set chart title and values
-
+    chart.title = title
+    chart.x_labels = dates
+    chart.add('Price', values)
 
     # Render chart to an svg and open in browser
+    chart.render_in_browser()
 
 
 # Main Loop
