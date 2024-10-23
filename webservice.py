@@ -12,10 +12,12 @@ def getChartType():
         print("Chart Types\n---------------------")
         print("1. Bar")
         print("2. Line")
-        user_input = input("Enter the chart type you want (1, 2): ")
-        if(int(user_input) == 1 or int(user_input) == 2):
-            break
-    return user_input
+        try: 
+            user_input = input("Enter the chart type you want (1, 2): ")
+            if int(user_input) == 1 or int(user_input) == 2:
+                return user_input
+        except:
+            print("Please enter a valid input - 1, 2")
 
 # Function to get Time series
 def getTimeSeriesFunction():
@@ -27,10 +29,12 @@ def getTimeSeriesFunction():
         print("2. Daily")
         print("3. Weekly")
         print("4. Monthly")
-        user_input = input("Enter time series function (1, 2, 3, 4): ")
-        if(int(user_input) < 0 or int(user_input) < 5):
-            break
-    return user_input
+        try: 
+             user_input = input("Enter time series function (1, 2, 3, 4): ")
+             if int(user_input) < 1 or int(user_input) < 5:
+                 return user_input
+        except:
+            print("Please enter a valid input - 1, 2")
 
 # Function to get stock data
 def getStockData(symbol, time_series_function):
