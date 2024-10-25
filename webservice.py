@@ -21,14 +21,14 @@ def getChartType():
         try: 
             user_input = input("Enter the chart type you want (1, 2): ")
             if int(user_input) == 1 or int(user_input) == 2:
-                return user_input
+                return int(user_input)
         except:
             print("Please enter a valid input - 1, 2")
 
 # Function to get Time series
 def getTimeSeriesFunction():
-    user_input = 0
-    while(True):
+    
+    while True:
         print("Select the Time Series of the chart you want to generate")
         print("--------------------------------------------------------")
         print("1. Intraday")
@@ -38,9 +38,9 @@ def getTimeSeriesFunction():
         try: 
              user_input = input("Enter time series function (1, 2, 3, 4): ")
              if int(user_input) < 1 or int(user_input) < 5:
-                 return user_input
-        except:
-            print("Please enter a valid input - 1, 2")
+                 return timeSeries[user_input]
+        except ValueError:
+            print("Please enter a valid input - 1, 2, 3, or 4")
 
        
     
@@ -108,10 +108,6 @@ def filtered(stockData, fDate, lDate):
 def main():
     while True:
     
-        chart_type = 0
-        timeSeriesFunction = 0
-    
-    
         print("Stock Data Visualizer\n---------------------------")
 
 
@@ -126,7 +122,7 @@ def main():
 
         # Ask user for date range
 
-        begin_date = validateDate("Enter the beginning date (YYY-MM-DD):")
+        begin_date = validateDate("Enter the beginning date (YYYY-MM-DD):")
         end_date = validateDate("Enter the end date (YYYY-MM-DD):")
 
 
@@ -136,19 +132,21 @@ def main():
             continue
 
         # Fetch stock data from Alpha Vantage
-        if timeSeriesFunction == "1":
-            timeSeriesKey = "Time Series (15min)"
-        elif timeSeriesFunction == "2":
-            timeSeriesKey = "Time Series (Daily)"
-        elif timeSeriesFunction == "3":
-            timeSeriesKey = "Weekly Time Series"
-        elif timeSeriesFunction == "4":
-            timeSeriesKey = "Monthly Time Series"
-        Stock = input(" Please enter the stock symbol").upper()
+        Stock = input("Please enter the stock symbol: ").upper()
         stockData= getStockData(Stock, timeSeriesFunction)
         if stockData is None:
             print("Error: No data found")
             continue
+        
+        if timeSeriesFunction == "TIME_SERIES_INTRADAY":
+            timeSeriesKey = "Time Series (15min)"
+        elif timeSeriesFunction == "TIME_SERIES_DAILY":
+            timeSeriesKey = "Time Series (Daily)"
+        elif timeSeriesFunction == "TIME_SERIES_WEEKLY":
+            timeSeriesKey = "Weekly Time Series"
+        elif timeSeriesFunction == "TIME_SERIES_MONTHLY":
+            timeSeriesKey = "Monthly Time Series"
+        
 
         if timeSeriesKey in stockData:
             stockS = stockData[timeSeriesKey]
@@ -163,11 +161,12 @@ def main():
 
         dataDates = filtered(stockS, fDate, lDate)
         # Plot chart based on user's choice
-        plot_chart(chart_type,dataDates, f"Stock Data for {Stock}: {fDate} to {lDate}")
+        plot_chart(chart_type, dataDates, f"Stock Data for {Stock}: {fDate} to {lDate}")
 
         # Ask if user wants to continue
         userContinue = input("Would you like to continue? (y/n)").lower()
         if userContinue != "y":
+            print("Thank you and Goodbye!")
             break
 
 if __name__ == "__main__":
