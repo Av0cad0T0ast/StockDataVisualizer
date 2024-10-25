@@ -5,7 +5,7 @@ from datetime import datetime
 API_KEY = '5JUJV1WUJIBMM95'
 
 timeSeries = {
-        "1" : "TIME_SERIES_INTRADAY",
+        "1" : "TIME_SERIES_INTRADAY&interval=15min",
         "2" : "TIME_SERIES_DAILY",
         "3" : "TIME_SERIES_WEEKLY",
         "4" : "TIME_SERIES_MONTHLY"
@@ -138,7 +138,7 @@ def main():
             print("Error: No data found")
             continue
         
-        if timeSeriesFunction == "TIME_SERIES_INTRADAY":
+        if timeSeriesFunction == "TIME_SERIES_INTRADAY&interval=15min":
             timeSeriesKey = "Time Series (15min)"
         elif timeSeriesFunction == "TIME_SERIES_DAILY":
             timeSeriesKey = "Time Series (Daily)"
