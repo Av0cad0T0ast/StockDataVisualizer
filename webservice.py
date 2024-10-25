@@ -4,6 +4,12 @@ from datetime import datetime
 
 API_KEY = '5JUJV1WUJIBMM95'
 
+timeSeries = {
+        "1" : "TIME_SERIES_INTRADAY",
+        "2" : "TIME_SERIES_DAILY",
+        "3" : "TIME_SERIES_WEEKLY",
+        "4" : "TIME_SERIES_MONTHLY"
+    }   
 # Function to get chart type
 
 def getChartType():
@@ -36,6 +42,8 @@ def getTimeSeriesFunction():
         except:
             print("Please enter a valid input - 1, 2")
 
+       
+    
 # Function to get stock data
 def getStockData(symbol, time_series_function):
     url = f"https://www.alphavantage.co/query?function={time_series_function}&symbol={symbol}&apikey={API_KEY}"
@@ -86,6 +94,14 @@ def plot_chart(chart_type, data, title):
     # Render chart to an svg and open in browser
     chart.render_in_browser()
 
+    # filter for plot
+def filtered(stockData, fDate, lDate):
+            filData={}
+            for date_str, data in stockData.items():
+                if fDate <= date_str <=lDate:
+                    filData[date_str] = data
+        
+            return filData
 
 # Main Loop
 
@@ -119,18 +135,40 @@ def main():
             print("End date cannot be earlier than the start date. Please try again.")
             continue
 
-
         # Fetch stock data from Alpha Vantage
+        if timeSeriesFunction == "1":
+            timeSeriesKey = "Time Series (15min)"
+        elif timeSeriesFunction == "2":
+            timeSeriesKey = "Time Series (Daily)"
+        elif timeSeriesFunction == "3":
+            timeSeriesKey = "Weekly Time Series"
+        elif timeSeriesFunction == "4":
+            timeSeriesKey = "Monthly Time Series"
+        Stock = input(" Please enter the stock symbol").upper()
+        stockData= getStockData(Stock, timeSeriesFunction)
+        if stockData is None:
+            print("Error: No data found")
+            continue
 
-
+        if timeSeriesKey in stockData:
+            stockS = stockData[timeSeriesKey]
+        else:
+            print(f"Error: Can not find time series data for {timeSeriesKey}")
+            continue
+        
         # Convert dates to strings for comparison
+        fDate =begin_date.strftime('%Y-%m-%d')
+        lDate = end_date.strftime('%Y-%m-%d')
+        
 
-
+        dataDates = filtered(stockS, fDate, lDate)
         # Plot chart based on user's choice
-
+        plot_chart(chart_type,dataDates, f"Stock Data for {Stock}: {fDate} to {lDate}")
 
         # Ask if user wants to continue
-
+        userContinue = input("Would you like to continue? (y/n)").lower()
+        if userContinue != "y":
+            break
 
 if __name__ == "__main__":
     main()
